@@ -1,35 +1,44 @@
-from flask import Flask
-
-# import CRUD Operations from Lesson 1
-from database_setup import Base, Restaurant, MenuItem
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-# Create session and connect to DB
-engine = create_engine('sqlite:///restaurantmenu.db', pool_pre_ping=True)
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
+from flask import Flask, render_template
+from fakeMenuItems import restaurant
 
 app = Flask(__name__)
 
-@app.route("/restaurants", methods=["GET"])
-def restaurants():
-    restaurants = session.query(Restaurant).all()
-    output = "<html><body>"
-    for restaurant in restaurants:
-        output += restaurant.name
-        output += "</br>"
-        output += "<a href='#'>Edit </a>"
-        output += "</br>"
-        output += "<a href='#'>Delete</a>"
-    output += "</body></html>"
+@app.route("/")
+@app.route("/restaurants")
+def showRestaurants():
+    return render_template("restaurants.html",  restaurant=restaurant)
+
+@app.route("/restaurants/new")
+def newRestaurant():
+    return render_template("newRestaurant.html")
+
+@app.route("/restaurants/restaurant_id/edit")
+def editRestaurant():
+    return render_template("editRestaurants.html", restaurants=restaurant_id) 
+
+@app.route("/restaurants/restaurant_id/delete")
+def deleteRestaurant():
+    return render_template("deleteRestaurants.html", restaurants=restaurant_id) 
+
+#Menu item
+@app.route("/restaurants/restaurant_id/restaurants/restaurant_id/menu")
+def showMenu():
+    return render_template("menu.html")
+
+@app.route("/restaurants/restaurant_id/menu/new")
+def newMenuItem():
+    return render_template("newmenuitem.html", restaurants=restaurant_id) 
+
+@app.route("/restaurants/restaurant_id/menu/menu_id/edit")
+def editMenuItem():
+    return render_template("editmenuItem.html", restaurants=restaurant_id) 
+
+@app.route("/restaurants/restaurant_id/menu/menu_id/delete")
+def deleteMenuItem():
+    return  render_template("deletemenuitem.html", restaurants=restaurant_id) 
+
 
 
 if __name__ == "__main__":
-    try:
-        print('Web server running...open localhost:8080/restaurants in your browser')
-        app.debug = True
-        app.run(host="localhost", port=8080)
-    except KeyboardInterrupt:
-        print('^C received, shutting down server')
+    app.debug = True
+    app.run(host='0.0.0.0', port=5000)
