@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request, url_for
 from fakeMenuItems import restaurant, restaurants, item, items
 
 app = Flask(__name__)
@@ -21,21 +21,25 @@ def deleteRestaurant(restaurant_id):
     return render_template("deleteRestaurant.html", restaurant_id=restaurant_id) 
 
 #Menu item
-@app.route("/restaurants/<int:restaurant_id>/restaurants/restaurant_id/menu")
+@app.route("/restaurant/<int:restaurant_id>/menu")
 def showMenu(restaurant_id):
-    return render_template("menu.html")
+    return render_template("menu.html", restaurant=restaurant, items=items)
 
 @app.route("/restaurants/<int:restaurant_id>/menu/new")
 def newMenuItem(restaurant_id):
     return render_template("newmenuitem.html", restaurant_id=restaurant_id) 
 
-@app.route("/restaurants/<int:restaurant_id>/menu/menu_id/edit")
+@app.route("/restaurants/<int:restaurant_id>/menu/menu_id/edit", methods=["POST", "GET"])
 def editMenuItem(restaurant_id):
-    return render_template("editmenuItem.html", restaurant_id=restaurant_id) 
+    if request.method == "POST":
+        submit = request.form["submit"]
+        return redirect(url_for("showMenu", values=submit))
+    else:
+        return render_template("editmenuItem.html", restaurant_id=restaurant_id) 
 
 @app.route("/restaurants/<int:restaurant_id>/menu/menu_id/delete")
 def deleteMenuItem(restaurant_id):
-    return  render_template("deletemenuitem.html", restaurant_id=restaurant_id) 
+    return  render_template("deletemenuitem.html", restaurant_id=restaurant_id, items=items) 
 
 
 

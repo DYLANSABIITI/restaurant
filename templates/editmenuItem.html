@@ -1,9 +1,38 @@
-<h1>Edit Menu Item</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Edit Menu Item</h1>
 
-<form action="#" method="POST">
-    <p>Name:</p>
-    <input type="text" size="30" name="name" placeholder="{{item.name}}">
+    <form action="3">
+        <label>Name:</label><br>
+        <br>
+        <input type ='text' size='30' name='nm'><br>
+        <br>
+        <label>Description:</label><br>
+        <br>
+        <input type ='text' size='30' name='ds'><br>
+        <br>
+        <label>Price:</label><br>
+        <br>
+        <input type ='text' size='30' name='pe'><br>
+        <br>
 
-    <input type="submit" value="Edit">
-    <a href="#">Cancel</a>
-</form>
+        <label>Course:</label><br>
+            <input type="radio" id="appetizer" name="appetizer" value="Appetizer">
+            <label for="Appetizer">Appetizer</label><br>
+            <input type="radio" id="entree" name="entree" value="Entree">
+            <label for="Entree">Entree</label><br>
+            <input type="radio" id="dessert" name="dessert" value="Dessert">
+            <label for="Dessert">Dessert</label><br>
+            <input type="radio" id="beverage" name="beverage" value="Beverage">
+            <label for="Beverage">Beverage</label><br>
+        <input type="submit" name="submit" value="Edit">
+        <a href="#">Cancel</a>
+    </form>
+    
+</body>
+</html>
