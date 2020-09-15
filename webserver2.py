@@ -2,27 +2,32 @@ from flask import Flask, render_template, redirect, request, url_for
 from fakeMenuItems import restaurant, restaurants, item, items
 from flask_sqlalchemy import SQLAlchemy
 
-
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///restaurant.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///restaurants.db'
+
 
 db = SQLAlchemy(app)
 
-class restaurants(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(20), unique=True, nullable=False)
+class Restaurants(db.Model):
+    id = db.Column(db.Integer, primary_key= True)
+    name = db.Column(db.String(20), nullable=False)
+    menu = db.relationship('MenuItem', backref='menu', lazy=True)
 
-class items(db.Model):
+    def __repr__(self):
+        return f"Restaurant name('{self.name}')"
+
+
+class MenuItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=True, nullable=False)
-    description = db.Column(db.String(120), unique=True, nullable=False)
-    course = db.Column(db.String(20), unique=True, nullable=False)
-    restaurants_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
+    name = db.Column(db.String(80), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    price = db.Column(db.String(8), nullable=False)
+    course = db.Column(db.String(250), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=False)
+    
 
-
-
-
-
+    def __repr__(self):
+        return f"item('{self.name}), description({self.description}), price({self.price}), course({self.course})"
 
 @app.route("/")
 @app.route("/restaurants")
