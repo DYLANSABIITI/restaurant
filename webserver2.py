@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, request, url_for
-from fakeMenuItems import restaurant, restaurants, item, items
+#from fakeMenuItems import restaurant, restaurants, item, items
+from small import Rest, Item
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -32,7 +33,7 @@ class MenuItem(db.Model):
 @app.route("/")
 @app.route("/restaurants")
 def showRestaurants():
-    return render_template("restaurants.html", restaurant=restaurant, restaurants=restaurants, items=items, item=item)
+    return render_template("restaurants.html", restaurant=Rest, restaurants=Restaurants, items=MenuItem, item=Item)
 
 @app.route("/restaurants/new")
 def newRestaurant():
@@ -49,7 +50,7 @@ def deleteRestaurant(restaurant_id):
 #Menu item
 @app.route("/restaurant/<int:restaurant_id>/menu")
 def showMenu(restaurant_id):
-    return render_template("menu.html", restaurant=restaurant, items=items)
+    return render_template("menu.html", restaurant=Rest, items=MenuItem)
 
 @app.route("/restaurants/<int:restaurant_id>/menu/new")
 def newMenuItem(restaurant_id):
@@ -65,10 +66,10 @@ def editMenuItem(restaurant_id):
 
 @app.route("/restaurants/<int:restaurant_id>/menu/menu_id/delete")
 def deleteMenuItem(restaurant_id):
-    return  render_template("deletemenuitem.html", restaurant_id=restaurant_id, items=items) 
+    return  render_template("deletemenuitem.html", restaurant_id=restaurant_id, items=MenuItem) 
 
 
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='0.0.0.0', port=5000) 
+    app.run(host='0.0.0.0', port=5000)
